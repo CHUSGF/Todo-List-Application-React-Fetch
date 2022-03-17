@@ -14,15 +14,18 @@ const TodoList = () => {
 		setTask(task.filter((deleteMe) => item != deleteMe));
 	// Funcion para guardar la tarea
 	const Save = () => {
-		setTask([...task, { label: text, done: false }]);
-		//  Retorna la API con las tareas almacenadas  despues de actualizar la pagina
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/chusgf", {
-			method: "PUT",
-			body: JSON.stringify([...task, { label: text, done: false }]),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
+		if (!task.map((x) => x.label).includes(text) && text.trim() != "") {
+			setTask([...task, { label: text, done: false }]);
+			//  Retorna la API con las tareas almacenadas  despues de actualizar la pagina
+			fetch("https://assets.breatheco.de/apis/fake/todos/user/chusgf", {
+				method: "PUT",
+				body: JSON.stringify([...task, { label: text, done: false }]),
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+			setText("");
+		}
 	};
 	// Consultar la API
 	useEffect(() => {
@@ -36,6 +39,7 @@ const TodoList = () => {
 		<div>
 			<div className="d-flex justify-content-center mb-3 ">
 				<input
+					value={text}
 					className="newTask me-1"
 					type="text"
 					onChange={handleChange}
