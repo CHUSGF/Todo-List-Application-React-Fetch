@@ -10,8 +10,16 @@ const TodoList = () => {
 		setText(event.target.value);
 	};
 	// Funcion para eliminar la lista de tareas
-	const Delete = (item) =>
+	const Delete = (item) => {
 		setTask(task.filter((deleteMe) => item != deleteMe));
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/chusgf", {
+			method: "PUT",
+			body: JSON.stringify(task.filter((deleteMe) => item != deleteMe)),
+			headers: {
+				"Content-Type": "application/json",
+			},
+		});
+	};
 	// Funcion para guardar la tarea
 	const Save = () => {
 		if (!task.map((x) => x.label).includes(text) && text.trim() != "") {
